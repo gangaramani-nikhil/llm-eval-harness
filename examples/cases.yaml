@@ -1,0 +1,31 @@
+# Example cases. Run key-free with: python -m harness.cli --cases examples/cases.yaml
+# The mock provider replays each case's `mock_response`; drop that field and
+# use --provider openai to run the same cases against a real model.
+
+- name: capital-of-france
+  prompt: "What is the capital of France? Answer with just the city name."
+  mock_response: "Paris"
+  scorer:
+    type: exact_match
+    expected: "Paris"
+
+- name: summary-mentions-topic
+  prompt: "Summarize why unit tests matter in one sentence."
+  mock_response: "Unit tests matter because they catch regressions before users do."
+  scorer:
+    type: contains
+    value: "regressions"
+
+- name: extract-ticket-id
+  prompt: "Extract the ticket ID from: 'Follow up on ENG-1234 about the login bug.' Reply with only the ID."
+  mock_response: "ENG-1234"
+  scorer:
+    type: regex
+    pattern: "^ENG-\\d{4}$"
+
+- name: structured-user-lookup
+  prompt: "Return a JSON object for user 42 with keys: id, name, and a nested address.city."
+  mock_response: '{"id": 42, "name": "Ada", "address": {"city": "London"}}'
+  scorer:
+    type: json_structure
+    required_keys: ["id", "name", "address.city"]

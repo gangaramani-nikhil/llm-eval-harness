@@ -1,5 +1,7 @@
 # llm-eval-harness
 
+![CI](https://github.com/gangaramani-nikhil/llm-eval-harness/actions/workflows/ci.yml/badge.svg)
+
 Prompt regression testing for LLM outputs. The unglamorous 80% of working with
 LLMs — checking that a prompt tweak didn't silently break something — made into
 a small tool.
@@ -76,8 +78,9 @@ pytest tests/ -v
 
 `python -m harness.cli --cases cases.yaml --provider openai` exits `0` when
 every case passes and `1` on any failure or provider error, so it drops into a
-CI step directly. (A GitHub Actions workflow is on the roadmap — for now, wire
-the command in yourself.)
+CI step directly. This repo's own GitHub Actions workflow
+(`.github/workflows/ci.yml`) runs the test suite plus the example cases against
+the mock provider on every push and PR — no API key needed.
 
 ## Roadmap
 
@@ -90,6 +93,6 @@ the command in yourself.)
 - [ ] Full JSON Schema validation (types, constraints — current check is keys-only)
 - [ ] Prompt templates with variables, so cases share one prompt with different inputs
 - [ ] Baseline snapshots: diff outputs against a saved baseline, not just assertions
-- [ ] GitHub Actions workflow example
+- [x] GitHub Actions workflow example
 - [ ] Latency/cost tracking per case
 - [ ] More providers (Anthropic, local models via Ollama)
